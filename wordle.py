@@ -1,6 +1,6 @@
 import os
 
-from json import dump
+from json import dump, load
 from typing import *
 from utils.configured_base_model import PyBaseModel
 from utils.pair import Pair
@@ -34,11 +34,17 @@ class Wordle(PyBaseModel):
         """
 
         super().__init__()
-        self.allowed = self.__parse_and_load_datafile("assets/allowed.txt")
-        self.answer = self.__parse_and_load_datafile("assets/answer.txt")
+        #self.allowed = self.__parse_and_load_datafile("assets/allowed.txt")
+        #self.answer = self.__parse_and_load_datafile("assets/answer.txt")
+        self.allowed = ["moral", "coral", "royal",
+    "rival", "flora", "mural", "lycra", "rural", "viral", "aural"]
+        self.answer = self.allowed
         self.n = letters
         self.c = (3 ** self.n) - 1
+        # self.compareDict = self.create(self.allowed, self.answer)
         self.compareDict = self.create(self.allowed, self.answer)
+        # with open("big_fat_dict_no_whitespace.json") as f:
+        #     self.compareDict = load(f)
 
     #create a dictionary of comparison results
     def create(self, allowed: List[str], ans: List[str]) -> Dict[str, Dict[str, int]]:
@@ -61,6 +67,7 @@ class Wordle(PyBaseModel):
         with open("big_fat_dict.json", "w") as f:
             dump(dict, f)
 
+        print(dict)
         return dict
 
     #return an int that gives the result of w1 compared to w2
@@ -95,7 +102,7 @@ class Wordle(PyBaseModel):
     def check(self, s: str, list: List[str]) -> Dict[int, List[str]]:
         dict = {}
         for word in list:
-            k = Wordle.compare(s, word, self.n)
+            k = self.compareDict[s][word]
             if k not in dict:
                 dict[k] = []
             dict[k].append(word)
@@ -104,9 +111,10 @@ class Wordle(PyBaseModel):
     def checkSet(self, s: str, ans: List[str]) -> Set[int]:
         sex = set()
         for word in ans:
-            k = Wordle.compare(s, word, self.n)
+            k = self.compareDict[s][word]
             if k not in sex:
                 sex.add(k)
+        # print(sex)
         return sex
 
     #return a list of successor words
@@ -141,18 +149,20 @@ class Wordle(PyBaseModel):
         """
 
         y = len(ans)
+        print(y)
 
         if (y < 3):
             return Pair(ans[0], 2 * y - 1)
         
         if (y < 20):
-            max = -float("inf")
+            max = float("-inf")
             string = ""
 
             for i in range(y):
                 temp_h = self.checkSet(ans[i], ans)
             
-                if (len(temp_h) == max):
+                if (len(temp_h) == y):
+                    # print("xd")
                     return Pair(ans[i], 2 * y - 1)
                 elif (len(temp_h) > max):
                     max = len(temp_h)
