@@ -1,19 +1,15 @@
 from typing import *
-from pydantic import BaseModel
+from utils.configured_base_model import PyBaseModel
 
 
-class Pair(BaseModel):
+class Pair(PyBaseModel):
     """Utility class to store paired data"""
 
     s: Any
     t: Any
 
-    class Config:
-        validate_assignment = True
-        allow_mutation = True
-
-    def __init__(self, s: Any, t: Any, **data: Any):
-        super().__init__(**data)
+    def __init__(self, s: Any, t: Any):
+        super().__init__()
         self.s = s
         self.t = t
 

@@ -1,14 +1,17 @@
 import wordle
+
+from typing import *
 from utils.nestedMap import NestedMap
-from utils.pair import *
+from utils.pair import Pair
 from functools import reduce
 
 
 class WordleMemo(wordle.Wordle):
     def __init__(self, letters: int):
         super().__init__(letters)
+
     
-    def solve(self, ans: List[str], t: int) -> Pair:
+    def solve(self, ans: List[str], t: int) -> Pair[NestedMap, int]:
         y = len(ans)
 
         if y < 3:
@@ -57,7 +60,7 @@ class WordleMemo(wordle.Wordle):
             Pair(None, float("inf"))
         )
 
-    def miniSolveMemo(self, s: str, ls: List[str], x: int):
+    def miniSolveMemo(self, s: str, ls: List[str], x: int) -> Pair[NestedMap, int]:
         sum = len(ls)
         hashmap = self.check(s, ls)
         nestedMap = NestedMap(s, None)
