@@ -1,5 +1,6 @@
 import os
 
+from multiprocessing import Pool
 from json import dump, load
 from typing import *
 from utils.configured_base_model import PyBaseModel
@@ -36,9 +37,11 @@ class Wordle(PyBaseModel):
         super().__init__()
         #self.allowed = self.__parse_and_load_datafile("assets/allowed.txt")
         #self.answer = self.__parse_and_load_datafile("assets/answer.txt")
-        self.allowed = ["moral", "coral", "royal",
-    "rival", "flora", "mural", "lycra", "rural", "viral", "aural"]
-        self.answer = self.allowed
+        # self.allowed = ["aaaaa", "baaaa", "caaaa", "daaaa", "eaaaa", "faaaa", "gaaaa", "haaaa", "iaaaa", "jaaaa"]
+        # self.allowed = ["aaaaa", "baaaa", "caaaa", "daaaa"]
+        # self.answer = self.allowed
+        self.allowed = self.__parse_and_load_datafile("assets/allowed.txt")
+        self.answer = self.__parse_and_load_datafile("assets/answer.txt")
         self.n = letters
         self.c = (3 ** self.n) - 1
         # self.compareDict = self.create(self.allowed, self.answer)
@@ -64,10 +67,10 @@ class Wordle(PyBaseModel):
             for j in range(n2):
                 dict[allowed[i]][ans[j]] = Wordle.compare(allowed[i], ans[j], self.n)
 
-        with open("big_fat_dict.json", "w") as f:
-            dump(dict, f)
+        # with open("big_fat_dict.json", "w") as f:
+        #     dump(dict, f)
 
-        print(dict)
+        #print(dict)
         return dict
 
     #return an int that gives the result of w1 compared to w2
@@ -103,6 +106,7 @@ class Wordle(PyBaseModel):
         dict = {}
         for word in list:
             k = self.compareDict[s][word]
+
             if k not in dict:
                 dict[k] = []
             dict[k].append(word)
@@ -136,11 +140,13 @@ class Wordle(PyBaseModel):
                 return [s]
             l.append(Pair(s = s, t = len(d)))
         l.sort(key=lambda x: x.getSnd(), reverse=True)
+        # print(l)
         threshold = l[min(len(l) - 1, k)].getSnd()
         ansList = []
         i = 0
         while i < x and l[i].getSnd() >= threshold:
-            ansList.append(self.allowed[i])
+            ansList.append(l[i].getFst())
+            i += 1
         return ansList
 
     def solve(self, ans: List[str], t: int) -> Pair:
@@ -149,7 +155,7 @@ class Wordle(PyBaseModel):
         """
 
         y = len(ans)
-        print(y)
+        # print(y)
 
         if (y < 3):
             return Pair(ans[0], 2 * y - 1)
@@ -172,6 +178,7 @@ class Wordle(PyBaseModel):
                 return Pair(string, 2 * y)
         
         next_successor = self.successor(ans, t)
+        # solve_map = list(Pool().map(lambda x: Pair(x, self.miniSolve(x, ans, t)), next_successor))
         solve_map = list(map(lambda x: Pair(x, self.miniSolve(x, ans, t)), next_successor))
         return reduce(lambda x, y: x if x.getSnd() < y.getSnd() else y, solve_map, Pair("", 6 * y))
 
@@ -181,6 +188,7 @@ class Wordle(PyBaseModel):
         """
 
         hashing = self.check(word, ans)
+        # print(hashing)
 
         if len(hashing) == 1:
             return float("inf")
@@ -188,8 +196,8 @@ class Wordle(PyBaseModel):
             return 2 * len(ans)
         
         sum = len(ans)
-
-        for key in hashing.keys():
+        
+        for key in hashing:
             sum += self.solve(hashing[key], t).getSnd()
 
         if self.c in hashing:

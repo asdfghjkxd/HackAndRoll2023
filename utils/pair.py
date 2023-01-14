@@ -23,7 +23,7 @@ class Pair(PyBaseModel):
         return str(self.s) + ", " + str(self.t)
 
     def __repr__(self):
-        return str(self.s) + ", " + str(self.t)
+        return "{" + str(self.s) + ", " + str(self.t) + "}"
 
     def getFst(self) -> Any:
         return self.s

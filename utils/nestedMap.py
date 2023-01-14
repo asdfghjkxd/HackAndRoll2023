@@ -1,26 +1,26 @@
 from typing import *
 
 
-# declare the generics
-K = TypeVar('K') 
-V = TypeVar('V')
-W = TypeVar('W') 
 
-class NestedMap(K, V, W):
-    v: Optional[V]
-    w: Optional[W]
-    # child: Dict[K, 'NestedMap(K, V, W)']
-    child: Dict[K, 'NestedMap']
+
+class NestedMap:
     
     def __init__(self):
-        self.v = V
-        self.w = W
+        self.v = None
+        self.w = None
         self.child = {}
     
-    def __init__(self, v: V, w: W):
+    def __init__(self, v, w):
         self.v = v
         self.w = w
         self.child = {}
+
+    def __repr__(self):
+        return str(self.v) + ", " +  str(self.w) + ":" + str(self.child)
+
+    def __str__(self):
+        return str(self.v) + ", " +  str(self.w) + ":" + str(self.child)
+
 
 
 
