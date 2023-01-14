@@ -2,7 +2,7 @@ import os
 
 from typing import *
 from pydantic import BaseModel
-from utils.pair import Pair
+from utils.pair import *
 from functools import reduce
 
 
@@ -91,12 +91,15 @@ class Wordle(BaseModel):
             d = self.checkSet(s, ans)
             if len(d) == y:
                 return [s]
-            l.append(Pair(s, len(d)))
+            l.append(Pair(s = s, t = len(d)))
         l.sort(lambda x: x.getSnd(), reverse = True)
         threshold = l[min(len(l) - 1, k)]
-        anslist = []
+        ansList = []
         i = 0
-        for 
+        while i < x and l[i].getSnd() >= threshold:
+            ansList.append(self.allowed[i])
+        return ansList
+
         
 
     def solve(self, ans: List[str], t: int) -> Pair:
@@ -104,7 +107,8 @@ class Wordle(BaseModel):
 
         if (y < 3):
             return Pair(ans[0], 2 * y - 1)
-        elif (y < 20):
+        
+        if (y < 20):
             max = -float("inf")
             string = ""
 
@@ -157,7 +161,7 @@ class Wordle(BaseModel):
             )
 
         grouping = sorted(grouping, cmp=inner_comparator())
-        
+
 
     # read and parse the datafile
     def __parse_and_load_datafile(self, datafile: os.PathLike | str):
