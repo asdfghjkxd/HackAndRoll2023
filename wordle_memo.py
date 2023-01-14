@@ -31,7 +31,7 @@ class WordleMemo(wordle.Wordle):
                 if len(h) == y:
                     nestedMap = NestedMap(ans[i], None)
                     for key in h.keys():
-                        nestedMap[key] = self.solve(h[j], t).getFst()
+                        nestedMap[key] = self.solve(h[key], t).getFst()
                     
                     nestedMap[self.c] = None
                     return Pair(nestedMap, 2 * y - 1)
@@ -57,7 +57,7 @@ class WordleMemo(wordle.Wordle):
             Pair(None, float("inf"))
         )
 
-    def miniSolveMemo(self, s: str, ls: List[String], x: int):
+    def miniSolveMemo(self, s: str, ls: List[str], x: int):
         sum = len(ls)
         hashmap = self.check(s, ls)
         nestedMap = NestedMap(s, None)
