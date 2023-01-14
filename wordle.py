@@ -6,7 +6,7 @@ from utils.pair import Pair
 from functools import reduce
 
 
-class Wordle:
+class Wordle(BaseModel):
     # allowed is the list of allowed words
     # answer is the list of answer, subset of allowed
     # number of letters
@@ -39,7 +39,6 @@ class Wordle:
                 dict[allowed[i]][ans[j]] = Wordle.compare(allowed[i], ans[j], self.n)
         return dict
 
-
     #return an int that gives the result of w1 compared to w2
     @classmethod
     def compare(cls, w1: str, w2: str, n: int) -> int:
@@ -63,8 +62,7 @@ class Wordle:
         ans = 0
         for i in range(n):
             ans += 3**i * arr1[i]
-        return ans 
-            
+        return ans    
 
     def check(self, s: str, list: List[str]) -> Dict[int: List[str]]:
         dict = {}
@@ -74,8 +72,6 @@ class Wordle:
                 dict[k] = []
             dict[k].append(word)
         return dict
-            
-
     
     def checkSet(self, s: str, list: List[str]) -> Set[int]:
         set = {}
@@ -146,7 +142,6 @@ class Wordle:
         
         return sum
 
-
     def print(self, ans: List, k: int):
         def inner_comparator():
             def compare(x: Pair, y: Pair):
@@ -158,13 +153,11 @@ class Wordle:
 
         for i in range(len(self.allowed)):
             grouping.append(
-                Pair(s=self.allowed[i], len(self.checkSet(self.allowed[i], ans)))
+                Pair(s=self.allowed[i], t=len(self.checkSet(self.allowed[i], ans)))
             )
 
-        
         grouping = sorted(grouping, cmp=inner_comparator())
-
-    
+        
 
     # read and parse the datafile
     def __parse_and_load_datafile(self, datafile: os.PathLike | str):
@@ -173,4 +166,3 @@ class Wordle:
                 return f.readlines()
         except FileNotFoundError:
             raise ValueError("Invalid Filepath: " + str(datafile))
-        
