@@ -164,3 +164,4 @@ utils/__pycache__/pair.cpython-310.pyc
 .DS_Store
 big_fat_dict.json
 big_fat_dict_no_whitespace.json
+.vercel
