@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/flowbite.min.js"></script>
+    </head>
+
+    <div>{{ render_partial('partials/header.html') }}</div>
+    <div class="p-8">
+        <p class="text-3xl font-bold"> {{ q }} </p>
+    </div>
+    <div> {{ render_partial('partials/footer.html') }}</div>
+</html>

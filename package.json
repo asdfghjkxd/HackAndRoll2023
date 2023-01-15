@@ -15,5 +15,11 @@
   "bugs": {
     "url": "https://github.com/asdfghjkxd/HackAndRoll2023/issues"
   },
-  "homepage": "https://github.com/asdfghjkxd/HackAndRoll2023#readme"
+  "homepage": "https://github.com/asdfghjkxd/HackAndRoll2023#readme",
+  "devDependencies": {
+    "tailwindcss": "^3.2.4"
+  },
+  "dependencies": {
+    "flowbite": "^1.6.2"
+  }
 }

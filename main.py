@@ -4,7 +4,7 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "/assets"
-jinja_partials.register_extension(app)
+jinja_partials.register_extensions(app)
 
 @app.route("/")
 @app.route("/index")
