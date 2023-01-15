@@ -12,7 +12,9 @@
 
     <div>{{ render_partial('partials/header.html') }}</div>
     <div class="p-8">
-        <p class="text-3xl font-bold"> {{ q }} </p>
+        <p class="text-3xl font-bold mb-10"> {{ q }} </p>
+
+        <p class="text-3xl font-bold"> Your word is {{ q_resp }} </p>
     </div>
     <div> {{ render_partial('partials/footer.html') }}</div>
 </html>
