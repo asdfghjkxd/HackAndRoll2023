@@ -1,4 +1,5 @@
 import jinja_partials
+from wordle import *
 
 from flask import Flask, render_template, request
 
@@ -22,10 +23,11 @@ def solver():
 
 @app.route("/solver/<query>")
 def solver_query(query: str):
-    # do some function here
+    w = Wordle(5)
+    result = w.solve(w.answer, 1)
     return render_template("home/solver_page.html",
                            q=query,
-                           q_resp="HERE GOES YOUR FUNCTION OUTPUT")
+                           q_resp= result)
 
 
 if __name__ == "__main__":
